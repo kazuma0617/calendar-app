@@ -29,7 +29,7 @@ class ScheduleController extends Controller
         $youbi = $timestamp->dayOfWeek;
 
         // DBから該当月の予定を一括取得 (Eloquent ORM)
-        $start_date = $ym . '01';
+        $start_date = $ym . '-01';
         $end_date = sprintf('%s-%02d', $ym, $day_count);
 
         $schedules_from_db = Schedule::whereBetween('target_date', [$start_date, $end_date])->get();
@@ -78,7 +78,16 @@ class ScheduleController extends Controller
     }
 
     public function add(Request $request) {
-        return view('add');
+        $date = $request->input('date', date('Y-m-d'));
+        return view('add', compact('date'));
+    }
+
+    public function store(Request $request) {
+        Schedule::create([
+            'target_date' => $request->input('target_date'),
+            'plan' => $request->input('plan'),
+        ]);
+        return redirect()->route('index');
     }
 
     public function detail(Request $request) {

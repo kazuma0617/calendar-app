@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     //
+    protected $fillable = [
+        'target_date',
+        'plan',
+    ];
 }
